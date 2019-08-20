@@ -31,6 +31,7 @@ import multiprocessing
 import collections
 import shutil
 import rasterio
+from rasterio.errors import RasterioIOError
 
 
 from s2p.config import cfg
@@ -425,7 +426,7 @@ def mean_heights(tile):
             with rasterio.open(os.path.join(tile['dir'], 'pair_{}'.format(i + 1),
                                             'height_map.tif'), 'r') as f:
                 maps[:, :, i] = f.read(1)
-        except RuntimeError:  # the file is not there
+        except (RuntimeError, RasterioIOError):  # the file is not there
             maps[:, :, i] *= np.nan
 
     validity_mask = maps.sum(axis=2)  # sum to propagate nan values
