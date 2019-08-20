@@ -3,6 +3,7 @@
 *.a
 *.so
 *~
+*.egg-info/
 
 bin
 build
